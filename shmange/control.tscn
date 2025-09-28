@@ -1,0 +1,206 @@
+[gd_scene load_steps=13 format=3 uid="uid://cijnocgmavpxk"]
+
+[ext_resource type="PackedScene" uid="uid://csq76jvifjnle" path="res://main.tscn" id="1_0fbet"]
+[ext_resource type="Shader" uid="uid://cn7mwvsm0qpx6" path="res://Shaders/control.gdshader" id="1_62e2m"]
+[ext_resource type="Theme" uid="uid://ch11iek4uthry" path="res://UItheme.tres" id="1_iy58a"]
+[ext_resource type="Texture2D" uid="uid://rpon8ey78sxq" path="res://Images/UI/TopView.png" id="4_kbped"]
+[ext_resource type="Script" uid="uid://cmxaprjy4d3fr" path="res://Scripts/view_check.gd" id="5_fj5cn"]
+[ext_resource type="PackedScene" uid="uid://binogv4ir2vqn" path="res://critter.tscn" id="6_fj5cn"]
+[ext_resource type="Script" uid="uid://cnob2saotkd03" path="res://Scripts/camera_3d_create.gd" id="7_iy58a"]
+[ext_resource type="Texture2D" uid="uid://qnsuyf3kruak" path="res://Images/Fruit.png" id="8_sky72"]
+[ext_resource type="Texture2D" uid="uid://c08c5rlls0vv7" path="res://Images/Meat.png" id="9_0ytqx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qtu10"]
+shader = ExtResource("1_62e2m")
+shader_parameter/wet = false
+
+[sub_resource type="World3D" id="World3D_iy58a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6a6wx"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.294118, 0.270588, 0.164706, 1)
+
+[node name="TabContainer" type="TabContainer" parent="."]
+texture_filter = 1
+layout_mode = 1
+offset_left = 22.0
+offset_right = 662.0
+offset_bottom = 374.0
+scale = Vector2(1.73, 1.73)
+theme = ExtResource("1_iy58a")
+tab_alignment = 1
+current_tab = 1
+
+[node name="Main" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Main" type="SubViewportContainer" parent="TabContainer/Main"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_qtu10")
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = 303.0
+
+[node name="SubViewport" type="SubViewport" parent="TabContainer/Main/Main"]
+handle_input_locally = false
+size = Vector2i(640, 343)
+render_target_update_mode = 0
+
+[node name="Main" parent="TabContainer/Main/Main/SubViewport" instance=ExtResource("1_0fbet")]
+
+[node name="ViewCheck" type="CheckButton" parent="TabContainer/Main"]
+layout_mode = 0
+offset_left = 608.092
+offset_top = -0.127655
+offset_right = 688.092
+offset_bottom = 39.8723
+scale = Vector2(0.4, 0.4)
+icon = ExtResource("4_kbped")
+script = ExtResource("5_fj5cn")
+
+[node name="Create" type="Control" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Main" type="SubViewportContainer" parent="TabContainer/Create"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_qtu10")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = 303.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="TabContainer/Create/Main"]
+world_3d = SubResource("World3D_iy58a")
+handle_input_locally = false
+size = Vector2i(320, 343)
+render_target_update_mode = 4
+
+[node name="Model Critter" parent="TabContainer/Create/Main/SubViewport" instance=ExtResource("6_fj5cn")]
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="TabContainer/Create/Main/SubViewport"]
+transform = Transform3D(0.464981, -0.53879, -0.702494, 0, -0.793491, 0.608582, -0.885321, -0.282979, -0.368959, 0, 0, 0)
+light_energy = 0.4
+light_angular_distance = 27.12
+shadow_enabled = true
+shadow_bias = 10.0
+shadow_normal_bias = 1.0
+shadow_opacity = 0.6
+shadow_blur = 10.0
+
+[node name="Node3D" type="Node3D" parent="TabContainer/Create/Main/SubViewport"]
+script = ExtResource("7_iy58a")
+
+[node name="Camera3D" type="Camera3D" parent="TabContainer/Create/Main/SubViewport/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="TabContainer" type="TabContainer" parent="TabContainer/Create"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 334.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_iy58a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6a6wx")
+tab_alignment = 1
+current_tab = 1
+
+[node name="Genetics" type="Control" parent="TabContainer/Create/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Color" type="Label" parent="TabContainer/Create/TabContainer/Genetics"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 290.0
+offset_bottom = 107.0
+theme = ExtResource("1_iy58a")
+text = "color"
+vertical_alignment = 1
+
+[node name="ColorPicker" type="ColorPicker" parent="TabContainer/Create/TabContainer/Genetics/Color"]
+layout_mode = 0
+offset_left = 184.104
+offset_top = 0.508664
+offset_right = 482.104
+offset_bottom = 299.509
+scale = Vector2(0.3, 0.3)
+edit_alpha = false
+sampler_visible = false
+color_modes_visible = false
+sliders_visible = false
+presets_visible = false
+
+[node name="body" type="Control" parent="TabContainer/Create/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Teeth" type="Label" parent="TabContainer/Create/TabContainer/body"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 290.0
+offset_bottom = 60.0
+theme = ExtResource("1_iy58a")
+text = "teeth"
+horizontal_alignment = 1
+
+[node name="TabBar" type="TabBar" parent="TabContainer/Create/TabContainer/body/Teeth"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 20.0
+offset_right = 273.0
+offset_bottom = 34.0
+theme = ExtResource("1_iy58a")
+current_tab = 0
+max_tab_width = 75
+tab_count = 2
+tab_0/title = "Herbivore"
+tab_0/tooltip = "eating fruit"
+tab_0/icon = ExtResource("8_sky72")
+tab_1/title = "Carnivore"
+tab_1/tooltip = "eating meat"
+tab_1/icon = ExtResource("9_0ytqx")
+
+[node name="brain" type="Control" parent="TabContainer/Create/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[connection signal="toggled" from="TabContainer/Main/ViewCheck" to="TabContainer/Main/ViewCheck" method="_on_toggled"]
